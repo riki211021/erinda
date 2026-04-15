@@ -460,4 +460,7 @@ function showLeaderboard() {
     div.innerText = `${medal} ${i + 1}. ${item[0]} - ${item[1]} poin`;
     board.appendChild(div);
   });
+  // ================= GLOBAL FIX =================
+window.selectRegion = selectRegion;
+window.backToMap = backToMap;
 }
