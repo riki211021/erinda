@@ -1,34 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Quiz Budaya Indonesia</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz Budaya Indonesia</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- MAP -->
+    <div id="mapPage">
+      <h1>Pilih Pulau</h1>
 
-<!-- HALAMAN PETA -->
-<div id="mapPage">
-  <h1>Pilih Daerah</h1>
-  <div class="map-container">
-    <img src="assets/map.png" class="map">
+      <div class="map-container">
+        <img src="assets/map.png" class="map" />
 
-    <button class="region" style="top:60%; left:80%;" onclick="startQuiz('papua')">
-      Papua
-    </button>
+        <!-- SUMATRA -->
+        <button class="region pin" style="top: 55%; left: 17%" onclick="selectRegion('sumatra')">
+          <img src="assets/pin.png" alt="Sumatra" />
+          <span>Sumatra</span>
+        </button>
 
-    <button class="region" style="top:65%; left:45%;" onclick="startQuiz('jawa')">
-      Jawa
-    </button>
-  </div>
-</div>
+        <!-- JAWA -->
+        <button class="region pin" style="top: 75%; left: 35%" onclick="selectRegion('jawa')">
+          <img src="assets/pin.png" alt="Jawa" />
+          <span>Jawa</span>
+        </button>
 
-<!-- HALAMAN QUIZ -->
-<div id="quizPage">
-  <h2 id="question"></h2>
-  <div id="answers"></div>
-</div>
+        <!-- KALIMANTAN -->
+        <button class="region pin" style="top: 55%; left: 40%" onclick="selectRegion('kalimantan')">
+          <img src="assets/pin.png" alt="Kalimantan" />
+          <span>Kalimantan</span>
+        </button>
 
-<script src="script.js"></script>
-</body>
+        <!-- SULAWESI -->
+        <button class="region pin" style="top: 60%; left: 55%" onclick="selectRegion('sulawesi')">
+          <img src="assets/pin.png" alt="Sulawesi" />
+          <span>Sulawesi</span>
+        </button>
+
+        <!-- PAPUA -->
+        <button class="region pin" style="top: 65%; left: 94%" onclick="selectRegion('papua')">
+          <img src="assets/pin.png" alt="Papua" />
+          <span>Papua</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- KELOMPOK -->
+    <div id="groupPage" style="display: none">
+      <h2>Pilih Kelompok</h2>
+      <div id="groupList"></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quizPage" style="display: none">
+      <h2 id="question"></h2>
+      <div id="answers"></div>
+    </div>
+
+    <!-- HASIL -->
+    <div id="resultPage" style="display: none">
+      <h2 id="scoreText"></h2>
+      <button onclick="backToMap()">Kembali</button>
+    </div>
+
+    <!-- RANKING -->
+    <div id="leaderboardPage" style="display: none">
+      <h1>Ranking Kelompok</h1>
+      <div id="leaderboard"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
