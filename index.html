@@ -2,73 +2,124 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Quiz Budaya Indonesia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jelajah Budaya Indonesia 🇮🇩</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- MAP -->
-    <div id="mapPage">
-      <h1>Pilih Pulau</h1>
+    <!-- Floating stars -->
+    <script>
+      const colors = ["#c4b5fd", "#fbcfe8", "#fde68a", "#a5f3fc", "#bbf7d0"];
+      for (let i = 0; i < 26; i++) {
+        const s = document.createElement("div");
+        s.className = "star";
+        const size = Math.random() * 8 + 4;
+        s.style.cssText = `width:${size}px;height:${size}px;background:${colors[i % colors.length]};top:${Math.random() * 100}vh;left:${Math.random() * 100}vw;--dur:${2 + Math.random() * 4}s;--delay:${Math.random() * 4}s`;
+        document.body.appendChild(s);
+      }
+    </script>
 
-      <div class="map-container">
-        <img src="assets/map.png" class="map" />
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
-        <!-- SUMATRA -->
-        <button class="region pin" style="top: 55%; left: 17%" onclick="selectRegion('sumatra')">
-          <img src="assets/pin.png" alt="Sumatra" />
-          <span>Sumatra</span>
+    <!-- ============ PAGE: MAP ============ -->
+    <div id="mapPage" class="page active">
+      <div class="logo-title">🗺️ Jelajah Budaya Indonesia</div>
+      <p class="subtitle">Klik pulau untuk mulai petualangan! 🌟</p>
+
+      <div class="map-wrap">
+        <img
+          src="assets/map.png"
+          class="map"
+          alt="Peta Indonesia"
+          onerror="
+            this.style.minHeight = '220px';
+            this.style.background = 'linear-gradient(135deg,#ddd6fe,#fbcfe8)';
+            this.alt = 'Peta Indonesia';
+          "
+        />
+
+        <button class="region pin" id="btn-sumatra" style="top: 52%; left: 17%" onclick="selectRegion('sumatra')">
+          <div class="pin-bubble" style="background: linear-gradient(135deg, #7c3aed, #a78bfa)">🌋</div>
+          <span class="pin-label">Sumatra</span>
         </button>
 
-        <!-- JAWA -->
-        <button class="region pin" style="top: 75%; left: 35%" onclick="selectRegion('jawa')">
-          <img src="assets/pin.png" alt="Jawa" />
-          <span>Jawa</span>
+        <button class="region pin" id="btn-jawa" style="top: 74%; left: 35%" onclick="selectRegion('jawa')">
+          <div class="pin-bubble" style="background: linear-gradient(135deg, #ec4899, #fb7185)">🏯</div>
+          <span class="pin-label">Jawa</span>
         </button>
 
-        <!-- KALIMANTAN -->
-        <button class="region pin" style="top: 55%; left: 40%" onclick="selectRegion('kalimantan')">
-          <img src="assets/pin.png" alt="Kalimantan" />
-          <span>Kalimantan</span>
+        <button class="region pin" id="btn-kalimantan" style="top: 50%; left: 42%" onclick="selectRegion('kalimantan')">
+          <div class="pin-bubble" style="background: linear-gradient(135deg, #f59e0b, #fbbf24)">🌳</div>
+          <span class="pin-label">Kalimantan</span>
         </button>
 
-        <!-- SULAWESI -->
-        <button class="region pin" style="top: 60%; left: 55%" onclick="selectRegion('sulawesi')">
-          <img src="assets/pin.png" alt="Sulawesi" />
-          <span>Sulawesi</span>
+        <button class="region pin" id="btn-sulawesi" style="top: 56%; left: 58%" onclick="selectRegion('sulawesi')">
+          <div class="pin-bubble" style="background: linear-gradient(135deg, #0d9488, #34d399)">🐚</div>
+          <span class="pin-label">Sulawesi</span>
         </button>
 
-        <!-- PAPUA -->
-        <button class="region pin" style="top: 65%; left: 94%" onclick="selectRegion('papua')">
-          <img src="assets/pin.png" alt="Papua" />
-          <span>Papua</span>
+        <button class="region pin" id="btn-papua" style="top: 64%; left: 84%" onclick="selectRegion('papua')">
+          <div class="pin-bubble" style="background: linear-gradient(135deg, #0ea5e9, #38bdf8)">🦜</div>
+          <span class="pin-label">Papua</span>
         </button>
+      </div>
+
+      <div class="region-legend" id="regionLegend"></div>
+    </div>
+
+    <!-- ============ PAGE: GROUP ============ -->
+    <div id="groupPage" class="page">
+      <div class="emoji-big" id="groupEmoji">🎯</div>
+      <h1 class="section-heading" id="groupRegionTitle">Pilih Kelompok</h1>
+      <p class="subtitle">Siapa yang mau bermain duluan?</p>
+      <div class="section-card" style="gap: 24px">
+        <div class="group-grid" id="groupList"></div>
+        <button class="btn btn-primary" onclick="goToMap()">← Kembali ke Peta</button>
       </div>
     </div>
 
-    <!-- KELOMPOK -->
-    <div id="groupPage" style="display: none">
-      <h2>Pilih Kelompok</h2>
-      <div id="groupList"></div>
-    </div>
+    <!-- ============ PAGE: QUIZ ============ -->
+    <div id="quizPage" class="page">
+      <div class="quiz-header">
+        <span class="q-number" id="qNumber">Soal 1/5</span>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div class="score-badge">⭐ <span id="scoreLive">0</span></div>
+      </div>
 
-    <!-- QUIZ -->
-    <div id="quizPage" style="display: none">
-      <h2 id="question"></h2>
+      <div class="question-box">
+        <h2 id="question">Loading...</h2>
+      </div>
+
       <div id="answers"></div>
     </div>
 
-    <!-- HASIL -->
-    <div id="resultPage" style="display: none">
-      <h2 id="scoreText"></h2>
-      <button onclick="backToMap()">Kembali</button>
+    <!-- ============ PAGE: RESULT ============ -->
+    <div id="resultPage" class="page">
+      <div class="section-card">
+        <div class="stars-row" id="starsRow"></div>
+        <div class="score-big" id="scoreBig">0</div>
+        <div class="score-label">dari 5 soal benar</div>
+        <div class="result-msg" id="resultMsg">Hebat!</div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center">
+          <button class="btn btn-primary" onclick="backToMap()">🗺️ Kembali ke Peta</button>
+        </div>
+      </div>
     </div>
 
-    <!-- RANKING -->
-    <div id="leaderboardPage" style="display: none">
-      <h1>Ranking Kelompok</h1>
-      <div id="leaderboard"></div>
+    <!-- ============ PAGE: LEADERBOARD ============ -->
+    <div id="leaderboardPage" class="page">
+      <div class="logo-title">🏆 Papan Juara</div>
+      <p class="subtitle">Kelompok terbaik hari ini!</p>
+      <div class="section-card" style="max-width: 520px">
+        <div class="lb-list" id="leaderboard"></div>
+        <button class="btn btn-amber" onclick="resetGame()">🔄 Main Lagi</button>
+      </div>
     </div>
-
     <script src="script.js"></script>
   </body>
 </html>
